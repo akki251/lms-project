@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stige | <%= title %>
+    </title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/imgstyles.css">
+    <link rel="stylesheet/less" href="/style.less">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+      integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/3a5ae5bdea.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  </head>
+<body class="home-main">
+  
+
+  <div class="headings1">
+    <a href="" class="home">stige</a>
+    <% if(user){ %>
+      <a href="/logout" class="home-btn home-out-logout logout">Logout</a>
+      <a href="/userProfile" class="home-btn home-out user" >welcome <b> <%= user.fullname %> </b></a>
+      <% } else{ %>
+        <a href="/signup" class="home-btn signup">SignUp</a>
+        <a href="/login" class="home-btn login">Login</a>
+      <% } %>
+  </div>
+
+  <div class="headings">
+    <h2>Internship Training Program</h2>
+  </div>
+  <div class="home-tagline">
+    <h3>Get trained, work on live projects and get certified in 8 weeks.</h3>
+  </div>
+
+  <div class="home-link">
+    <a href="/signup" class="reg-for-free"> Register for free </a>
+    <% if(user){ %>
+    <a href="/coursePage" class="explore-tracks"> Explore Tracks </a>
+    <% } else{ %>  
+      <a href="/login" class="explore-tracks"> Explore Tracks </a>
+    <% } %>
+  </div>
+
+  <div class="application-date">
+    <p>Application Deadline: 11:00 AM, 19th June ,2022 &rarr;</p>
+  </div>
+  <div class="header-footer">
+    <marquee> $ Stand out with an internship experience and certification in your resume.</marquee>
+  </div>
+  
+
+
+
+  <%- include('partials/footer'); -%>

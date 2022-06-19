@@ -1,0 +1,106 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stige | <%= title %></title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/imgstyles.css">
+  <link rel="stylesheet/less" href="/style.less">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <script src="https://kit.fontawesome.com/3a5ae5bdea.js" crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  
+  
+</head>
+<body class="signup-bg">
+
+
+  <div class="form">
+    <form>
+      <h2>stige</h2>
+      <label for="email">Email</label>
+      <input type="text" name="email" required>
+      <div class="email error"></div>
+      <label for="password">Password</label>
+      <div class="passToggle">
+        <input type="password" name="password" id="passToggle" required>
+        <i class="fa fa-eye" aria-hidden="true" id="passVisible" onclick="Toggle()"></i>
+        <i class="fa fa-eye-slash" aria-hidden="true" id="passNotVisible" onclick="Toggle()"></i>
+      </div>
+      <div class="password error"></div>
+      <button class="login-btn">login</button>
+      <p>Don't have an account ? <a href="/signup">Register</a> </p>
+    </form>
+  </div>
+
+  <script>
+
+    // Change the type of input to password or text
+    var eyeOn = document.getElementById("passVisible");
+    var eyeOff = document.getElementById("passNotVisible");
+    eyeOff.style.display = "none";
+    function Toggle() {
+      var temp = document.getElementById("passToggle");
+        if (temp.type === "password") {
+          temp.type = "text";
+          eyeOn.style.display = "none";
+          eyeOff.style.display = "block";
+
+        }
+        else {
+          temp.type = "password";
+          eyeOn.style.display = "block";
+          eyeOff.style.display = "none";
+
+        }
+    }
+
+
+
+    const form = document.querySelector('form');
+    const emailError = document.querySelector('.email.error');
+    const passwordError = document.querySelector('.password.error');
+
+    form.addEventListener('submit',async (e)=>{
+
+      e.preventDefault();
+
+        //reset the values
+        emailError.textContent=' ';
+        passwordError.textContent=' ';
+
+        //get the values
+        const email = form.email.value;
+        const password = form.password.value;
+        
+    
+        try{
+          const res = await fetch('/login', {
+            method: 'POST',
+            body: JSON.stringify({ email, password }),
+            headers:{ 'Content-Type':'application/json' }
+          });
+
+          const data = await res.json();
+          console.log(data);
+          if(data.errors){
+            emailError.textContent = data.errors.email;
+            passwordError.textContent = data.errors.password;
+
+          }
+          if (data.user){
+            location.assign('/dashboard');
+          }
+
+        }
+        catch(err){
+          console.log(err);
+        }
+    })
+  </script>
+
+
+<%- include('partials/footer'); -%> 

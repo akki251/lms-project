@@ -1,0 +1,129 @@
+
+ <%- include("./partials/header.ejs") %>
+
+
+    <div class="task-contain">
+        <h4>Add New Task</h4>
+        <div class="card-content">
+            <form action="">
+                <input type="text" id="task-title" placeholder="Task title">
+                <input type="text" id="task-text" placeholder="True/False">
+            
+                <button id="add-btn" class="all-btn">Add Task</button>
+            </form>
+        </div>
+
+        <div class="card-action">
+            <h5>Manage Your Tasks</h5>
+            <hr>
+            <div id="tasks">
+        
+                    <div class="task collection">
+                        <p class="task-counter">${index + 1})</p>
+                        <div>
+                            <h3 class="task-title"> $element.title </h3>
+                            <p class="task-text"> $element.text</p>
+                        </div>
+                        <button class="task-btn all-btn">Delete</button>
+                    </div>
+                
+            </div>
+        </div>
+    </div>
+    
+
+    <script>
+        
+
+// Add note to local storage
+let addBtn = document.getElementById("add-btn");
+addBtn.addEventListener("click", function(e) {
+
+  let addTitle = document.getElementById("task-title");
+  let textStatus = document.getElementById("task-text");
+  
+    
+  
+    if (addTitle.value == "" || textStatus.value == "") {
+        return alert("Please add Task Title and Details")
+    }
+
+    if(textStatus.value == 'false' || textStatus.value == 'true' || textStatus.value == 'False' || textStatus.value == 'True' || textStatus.value == 'FALSE' || textStatus.value == 'TRUE'){
+        var addTxt = textStatus
+    }
+    else{
+        return alert("Please Enter TRUE/FALSE...")
+        
+    }
+  let tasks = localStorage.getItem("tasks");
+  if (tasks == null) {
+    tasksObj = [];
+  } else {
+    tasksObj = JSON.parse(tasks);
+  }
+  
+  let myObj = {
+    title: addTitle.value,
+    text: addTxt.value
+  }
+  tasksObj.push(myObj);
+  localStorage.setItem("tasks", JSON.stringify(tasksObj));
+  addTxt.value = "";
+  addTitle.value = "";
+  showTasks();
+
+});
+
+// Function to show elements from localStorage
+function showTasks() {
+  let tasks = localStorage.getItem("tasks");
+  if (tasks == null) {
+    tasksObj = [];
+  } else {
+    tasksObj = JSON.parse(tasks);
+  }
+  let html = "";
+  tasksObj.forEach(function(element, index) {
+    html += `
+
+        <div class="task collection">
+            <p class="task-counter">${index + 1})</p>
+            <div>
+                <h3 class="task-title"> ${element.title} </h3>
+                <p class="task-text"> ${element.text}</p>
+            </div>
+            <button id="${index}" onclick="deleteTask(this.id)"  class="task-btn all-btn">Delete</button>
+        </div>
+            `;
+  });
+  let tasksElm = document.getElementById("tasks");
+  if (tasksObj.length != 0) {
+    tasksElm.innerHTML = html;
+  } else {
+    tasksElm.innerHTML = `No Tasks Yet! Add a task using the form above.`;
+  }
+}
+
+// Function to delete a note
+function deleteTask(index) {
+//   console.log("I am deleting", index);
+    let confirmDel = confirm("Delete this Task?");
+    if (confirmDel == true) {
+        let tasks = localStorage.getItem("tasks");
+        if (tasks == null) {
+            tasksObj = [];
+        } else {
+            tasksObj = JSON.parse(tasks);
+        }
+
+        tasksObj.splice(index, 1);
+        localStorage.setItem("tasks", JSON.stringify(tasksObj));
+        showTasks();
+    }
+  
+}
+showTasks();
+
+    </script>
+
+<%- include("./partials/footer.ejs") %>
